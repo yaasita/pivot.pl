@@ -15,7 +15,7 @@ my $p;
     my $tempdir = tempdir(CLEANUP => 1);
     local $ENV{LANG} = "C";
     chdir $tempdir;
-    system("curl -s http://www.tfx.co.jp/kawase/document/PRT-010-CSV-003-\$(date +%Y%m%d -d '2 days ago').CSV > input.csv") and die $!;
+    system("curl -fs http://www.tfx.co.jp/kawase/document/PRT-010-CSV-003-\$(date +%Y%m%d -d '1 days ago').CSV > input.csv") and die $!;
     open(my $fh, "<:encoding(Shift-JIS)","input.csv") or die $!;
     while(<$fh>){
         if (/米ドル・日本円取引所為替証拠金取引/){
