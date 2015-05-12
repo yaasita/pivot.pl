@@ -1,19 +1,32 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+
 use feature qw(say);
+use Encode;
+use utf8;
+use File::Temp qw/tempdir/;
+binmode STDOUT, ":utf8";
 
 my $p;
+
+# 前日分の高値,安値,終値を取得
 {
-    my ($high,$low,$close);
-    say "高値";
-    $high = <STDIN>;
-    say "安値";
-    $low = <STDIN>;
-    say "終値";
-    $close = <STDIN>;
-    $p = Pivot->new(High => $high, Low => $low, Close => $close);
+    my $tempdir = tempdir(CLEANUP => 1);
+    local $ENV{LANG} = "C";
+    chdir $tempdir;
+    system("curl -s http://www.tfx.co.jp/kawase/document/PRT-010-CSV-003-\$(date +%Y%m%d -d '2 days ago').CSV > input.csv") and die $!;
+    open(my $fh, "<:encoding(Shift-JIS)","input.csv") or die $!;
+    while(<$fh>){
+        if (/米ドル・日本円取引所為替証拠金取引/){
+            my @fx = split(/,/);
+            $p = Pivot->new(High => $fx[8], Low => $fx[10], Close => $fx[12]);
+        }
+    }
+    close $fh;
 }
+chdir "/tmp";
+
 my ($title, $val);
 format STDOUT =
 @<: @<<<<<<<
