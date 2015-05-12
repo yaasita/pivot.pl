@@ -3,7 +3,17 @@ use strict;
 use warnings;
 use feature qw(say);
 
-my $p = Pivot->new(High => 120.255, Low => 119.555, Close => 119.7);
+my $p;
+{
+    my ($high,$low,$close);
+    say "高値";
+    $high = <STDIN>;
+    say "安値";
+    $low = <STDIN>;
+    say "終値";
+    $close = <STDIN>;
+    $p = Pivot->new(High => $high, Low => $low, Close => $close);
+}
 my ($title, $val);
 format STDOUT =
 @<: @<<<<<<<
