@@ -8,7 +8,7 @@ use MIME::Base64;
 use Digest::MD5 qw(md5_hex);
 
 
-my $TO_ADDRESS='spam@yaasita.net';
+my $TO_ADDRESS = $ARGV[0];
 
 {
     open (my $sendmailfh, "|-:encoding(UTF-8)", "/usr/sbin/sendmail -f $TO_ADDRESS $TO_ADDRESS") or die $!;
