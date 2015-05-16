@@ -8,14 +8,14 @@ use MIME::Base64;
 use Digest::MD5 qw(md5_hex);
 
 
-my $TO_ADDRESS = $ARGV[0];
+my $TO_ADDRESS = $ARGV[0] || 'root@localhost';
 
 {
-    open (my $sendmailfh, "|-:encoding(UTF-8)", "/usr/sbin/sendmail -f $TO_ADDRESS $TO_ADDRESS") or die $!;
-    print $sendmailfh mail_heder($TO_ADDRESS);
+    open (my $sml, "|-:encoding(UTF-8)", "/usr/sbin/sendmail -f $TO_ADDRESS $TO_ADDRESS") or die $!;
+    print $sml mail_heder($TO_ADDRESS);
     my $source_data = `./pivot.pl`;
-    print $sendmailfh encode_base64($source_data);
-    close $sendmailfh;
+    print $sml encode_base64($source_data);
+    close $sml;
 }
 
 sub mail_heder {
