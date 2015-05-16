@@ -1,14 +1,14 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-
 use feature qw(say);
 use Encode;
 use utf8;
 use File::Temp qw/tempdir/;
-binmode STDOUT, ":utf8";
 use Time::Piece;
 use Time::Seconds;
+
+binmode STDOUT, ":utf8";
 
 my $p;
 my $previous_day = &latest_data;
